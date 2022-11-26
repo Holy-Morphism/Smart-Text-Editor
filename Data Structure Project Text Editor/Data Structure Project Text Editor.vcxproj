@@ -139,7 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="TrieTree.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="TriTree.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TriTree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
