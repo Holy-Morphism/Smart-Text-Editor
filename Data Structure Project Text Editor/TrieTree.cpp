@@ -7,6 +7,7 @@ class TriTree {
 		char data;
 		bool colour;
 		Node* childeren[26]={NULL};
+		//array of childeren
 		Node()
 		{
 			data = '-';
