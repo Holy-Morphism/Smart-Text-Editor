@@ -12,54 +12,54 @@ class StringList {
 			next = NULL;
 		}
 	};
-	Node* head,*current;
+	Node* head, * current;
 	int count;
-	public:
-		StringList()
+public:
+	StringList()
+	{
+		head = current = NULL;
+		count = 0;
+	}
+	void Insert(string str)
+	{
+		if (head)
 		{
-			head = current = NULL;
-			count = 0;
-		}
-		void Insert(string str)
-		{
-			if (head)
-			{
-				current = head;
-				while (current)
-				{
-					current = current->next;
-				}
-				current = new Node(str);
-			}
-			else
-			{
-				head = new Node(str);
-			}
-			count++;
-		}
-		string*& StringArray()
-		{
-			string* temp = new string[count];
 			current = head;
-			int i = 0;
-			while (current && i<count)
+			while (current->next)
 			{
-				temp[i] = current->data;
-				i++;
 				current = current->next;
 			}
-			return temp;
+			current->next = new Node(str);
 		}
-		int size()
+		else
 		{
-			return count;
+			head = new Node(str);
 		}
+		count++;
+	}
+	string*& StringArray()
+	{
+		string* temp = new string[count];
+		current = head;
+		int i = 0;
+		while (current && i < count)
+		{
+			temp[i] = current->data;
+			i++;
+			current = current->next;
+		}
+		return temp;
+	}
+	int size()
+	{
+		return count;
+	}
 };
 class TriTree {
 	struct Node {
 		char data;
 		bool colour;
-		Node* childeren[26]={NULL};
+		Node* childeren[26] = { NULL };
 		//array of childeren
 		Node()
 		{
@@ -76,22 +76,23 @@ public:
 		string line;
 		read.open("Dictionary.txt");
 		while (getline(read, line)) {
-			insert(root,line);
+			insert(root, line);
 		}
 		read.close();
-		string* arr=NULL;
+		string* arr = NULL;
 		StringList wordlist;
-		Suggestion(root, "app", arr, wordlist);
-			for (int i = 0; i < wordlist.size(); i++)
-			{
-				cout << arr[i] << endl;
-			}
+		Suggestion(root, "app", wordlist);
+		arr = wordlist.StringArray();
+		for (int i = 0; i < wordlist.size(); i++)
+		{
+			cout << arr[i] << endl;
+		}
 	}
 	void insert(Node*& node, string str, int length = 0)
 	{
 		if (length < str.length())
 		{
-			for (int i = 0; i < 26 ; i++)
+			for (int i = 0; i < 26; i++)
 			{
 				if (node->childeren[i])
 				{
@@ -119,7 +120,7 @@ public:
 			}
 		}
 	}
-	void Suggestion(Node*& node,string str,string*& string_arr, StringList& wordlist,int length=0)
+	void Suggestion(Node*& node, string str, StringList& wordlist, int length = 0)
 	{
 		for (int i = 0; i < 26; i++)
 		{
@@ -132,7 +133,7 @@ public:
 						findword(node->childeren[i], str, wordlist);
 						return;
 					}
-					Suggestion(node->childeren[i], str, string_arr, wordlist, length + 1);
+					Suggestion(node->childeren[i], str, wordlist, length + 1);
 				}
 			}
 			else
@@ -140,9 +141,8 @@ public:
 				return;
 			}
 		}
-		string_arr = wordlist.StringArray();
 	}
-	void findword(Node*& node, string str,StringList &wordlist)
+	void findword(Node*& node, string str, StringList& wordlist)
 	{
 		for (int i = 0; i < 26; i++)
 		{
@@ -162,6 +162,10 @@ public:
 					findword(node->childeren[i], word, wordlist);
 				}
 			}
+			else
+			{
+				return;
+			}
 		}
 	}
 	void Display(Node*& node)
@@ -170,7 +174,7 @@ public:
 		{
 			if (node->childeren[i])
 			{
-				cout << node->childeren[i]->data<<" ";
+				cout << node->childeren[i]->data << " ";
 			}
 		}
 		for (int i = 0; i < 26; i++)
@@ -180,7 +184,7 @@ public:
 				Display(node->childeren[i]);
 			}
 		}
-		
+
 	}
 };
 int main()
