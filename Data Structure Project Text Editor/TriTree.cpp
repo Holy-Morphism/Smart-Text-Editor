@@ -133,8 +133,12 @@ void TriTree::findword(Node*& node, string str, StringList& wordlist)
 			if (node->childeren[i]->colour)
 			{
 				word += node->childeren[i]->data;
+				findword(node->childeren[i], word, wordlist);
 				wordlist.Insert(word);
-				return;
+				if (!node->childeren[i]->childeren[0])
+				{
+					return;
+				}
 			}
 			else
 			{
@@ -149,7 +153,7 @@ void TriTree::findword(Node*& node, string str, StringList& wordlist)
 	}
 }
 
-void TriTree::deletetree(Node * &node)
+void TriTree::deletetree(Node*& node)
 {
 	for (int i = 0; i < 26; i++)
 	{
@@ -192,13 +196,13 @@ void TriTree::Display(Node*& node)
 	}
 }
 
-int TriTree::Suggestion(string str,string*& str_arr)
+int TriTree::Suggestion(string str, string*& str_arr)
 {
 	/*
 	* Takes any string as an argumant
-	* Takes an empty string pointer aas an argument
+	* Takes an empty string pointer as an argument
 	* assignes suggested words
-	* return the size of array
+	* returns the size of string array
 	*/
 	StringList wordlist;
 	suggestion(root, str, wordlist);
