@@ -31,7 +31,7 @@ class TriTree {
 	void insert(Node*&, string, int);
 	void suggestion(Node*&, string, StringList&, int length);
 	void findword(Node*&, string, StringList&);
-	void DeleteTree(Node*&);
+	void deletetree(Node*&);
 public:
 	TriTree();
 	void Display(Node*&);

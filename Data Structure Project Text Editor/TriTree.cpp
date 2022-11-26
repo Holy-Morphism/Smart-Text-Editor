@@ -149,13 +149,13 @@ void TriTree::findword(Node*& node, string str, StringList& wordlist)
 	}
 }
 
-void TriTree::DeleteTree(Node * &node)
+void TriTree::deletetree(Node * &node)
 {
 	for (int i = 0; i < 26; i++)
 	{
 		if (node->childeren[i])
 		{
-			DeleteTree(node->childeren[i]);
+			deletetree(node->childeren[i]);
 		}
 	}
 	delete node;
@@ -208,5 +208,5 @@ int TriTree::Suggestion(string str,string*& str_arr)
 
 TriTree::~TriTree()
 {
-	DeleteTree(root);
+	deletetree(root);
 }
