@@ -1,6 +1,7 @@
 #include"TriTree.h"
 int main()
 {
+	//comment
 	TriTree tree;
 	string* arr = NULL;
 	int size = tree.Suggestion("app", arr);
