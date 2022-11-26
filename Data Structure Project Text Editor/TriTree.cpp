@@ -55,6 +55,17 @@ int TriTree::StringList::Size()
 	return count;
 }
 
+TriTree::StringList::~StringList()
+{
+	while (head)
+	{
+		current = head;
+		head = head->next;
+		delete current;
+	}
+	head = NULL;
+}
+
 void TriTree::insert(Node*& node, string str, int length = 0)
 {
 	if (length < str.length())
@@ -138,29 +149,18 @@ void TriTree::findword(Node*& node, string str, StringList& wordlist)
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void TriTree::DeleteTree(Node * &node)
+{
+	for (int i = 0; i < 26; i++)
+	{
+		if (node->childeren[i])
+		{
+			DeleteTree(node->childeren[i]);
+		}
+	}
+	delete node;
+	node = NULL;
+}
 
 //Public:
 TriTree::TriTree()
@@ -172,14 +172,6 @@ TriTree::TriTree()
 		insert(root, line);
 	}
 	read.close();
-	string* arr = NULL;
-	StringList wordlist;
-	suggestion(root, "app", wordlist);
-	arr = wordlist.StringArray();
-	for (int i = 0; i < wordlist.Size(); i++)
-	{
-		cout << arr[i] << endl;
-	}
 }
 
 void TriTree::Display(Node*& node)
@@ -198,4 +190,23 @@ void TriTree::Display(Node*& node)
 			Display(node->childeren[i]);
 		}
 	}
+}
+
+int TriTree::Suggestion(string str,string*& str_arr)
+{
+	/*
+	* Takes any string as an argumant
+	* Takes an empty string pointer aas an argument
+	* assignes suggested words
+	* return the size of array
+	*/
+	StringList wordlist;
+	suggestion(root, str, wordlist);
+	str_arr = wordlist.StringArray();
+	return wordlist.Size();
+}
+
+TriTree::~TriTree()
+{
+	DeleteTree(root);
 }

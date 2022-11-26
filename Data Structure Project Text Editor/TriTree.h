@@ -8,8 +8,7 @@ class TriTree {
 	struct Node {
 		char data;
 		bool colour;
-		Node* childeren[26] = { NULL };
-		//array of childeren
+		Node* childeren[26] = { NULL };//array of childeren
 		Node();
 	};
 	ifstream read;
@@ -27,11 +26,15 @@ class TriTree {
 		void Insert(string);
 		string*& StringArray();
 		int Size();
+		~StringList();
 	};
 	void insert(Node*&, string, int);
 	void suggestion(Node*&, string, StringList&, int length);
 	void findword(Node*&, string, StringList&);
+	void DeleteTree(Node*&);
 public:
 	TriTree();
 	void Display(Node*&);
+	int Suggestion(string,string*&);
+	~TriTree();
 };
