@@ -2,6 +2,59 @@
 #include<fstream>
 #include<string>
 using namespace std;
+class StringList {
+	struct Node {
+		string data;
+		Node* next;
+		Node(string str)
+		{
+			data = str;
+			next = NULL;
+		}
+	};
+	Node* head,*current;
+	int count;
+	public:
+		StringList()
+		{
+			head = current = NULL;
+			count = 0;
+		}
+		void Insert(string str)
+		{
+			if (head)
+			{
+				current = head;
+				while (current)
+				{
+					current = current->next;
+				}
+				current = new Node(str);
+			}
+			else
+			{
+				head = new Node(str);
+			}
+			count++;
+		}
+		string*& StringArray()
+		{
+			string* temp = new string[count];
+			current = head;
+			int i = 0;
+			while (current && i<count)
+			{
+				temp[i] = current->data;
+				i++;
+				current = current->next;
+			}
+			return temp;
+		}
+		int size()
+		{
+			return count;
+		}
+};
 class TriTree {
 	struct Node {
 		char data;
@@ -26,7 +79,13 @@ public:
 			insert(root,line);
 		}
 		read.close();
-		Display(root);
+		string* arr=NULL;
+		StringList wordlist;
+		Suggestion(root, "app", arr, wordlist);
+			for (int i = 0; i < wordlist.size(); i++)
+			{
+				cout << arr[i] << endl;
+			}
 	}
 	void insert(Node*& node, string str, int length = 0)
 	{
@@ -60,6 +119,51 @@ public:
 			}
 		}
 	}
+	void Suggestion(Node*& node,string str,string*& string_arr, StringList& wordlist,int length=0)
+	{
+		for (int i = 0; i < 26; i++)
+		{
+			if (node->childeren[i])
+			{
+				if (node->childeren[i]->data == str[length])
+				{
+					if (length == str.length() - 1)
+					{
+						findword(node->childeren[i], str, wordlist);
+						return;
+					}
+					Suggestion(node->childeren[i], str, string_arr, wordlist, length + 1);
+				}
+			}
+			else
+			{
+				return;
+			}
+		}
+		string_arr = wordlist.StringArray();
+	}
+	void findword(Node*& node, string str,StringList &wordlist)
+	{
+		for (int i = 0; i < 26; i++)
+		{
+			if (node->childeren[i])
+			{
+				string word = "";
+				word += str;
+				if (node->childeren[i]->colour)
+				{
+					word += node->childeren[i]->data;
+					wordlist.Insert(word);
+					return;
+				}
+				else
+				{
+					word += node->childeren[i]->data;
+					findword(node->childeren[i], word, wordlist);
+				}
+			}
+		}
+	}
 	void Display(Node*& node)
 	{
 		for (int i = 0; i < 26; i++)
@@ -82,5 +186,4 @@ public:
 int main()
 {
 	TriTree tree;
-
 }
