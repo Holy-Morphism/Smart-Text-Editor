@@ -24,7 +24,7 @@ int main()
 		//return 0;
 	}
 	TriTree obj;
-	string *arr = NULL, str, str2;
+	string* arr = NULL, str, str2;
 	string alpha = "";
 	char character = '/0';
 	int count = 0, count2 = 0;
@@ -68,7 +68,7 @@ int main()
 				{
 					int j;
 					cout << "\t\t\t";
-					for (int i = 0;i < no_of_suggestions;i++)
+					for (int i = 0; i < no_of_suggestions; i++)
 					{
 						//outputs those suggestion whose size is 8 or less
 						if (arr[i].length() <= 8)
@@ -105,7 +105,7 @@ int main()
 				{
 
 					cout << "\t\t\t";
-					for (int i = 0;i < 10;i++)
+					for (int i = 0; i < 10; i++)
 					{
 						//outputs those suggestion whose size is 8 or less
 						if (arr[i].length() <= 8)

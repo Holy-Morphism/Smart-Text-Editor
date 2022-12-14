@@ -2,6 +2,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<queue>
 using namespace std;
 
 class TriTree {
@@ -9,9 +10,10 @@ class TriTree {
 		char data;
 		bool colour;
 		Node* childeren[26] = { NULL };//array of childeren
-		Node();
+		Node(char,bool);
 	};
 	ifstream read;
+	ofstream write;
 	Node* root;
 	class StringList {
 		struct Node {
@@ -28,10 +30,14 @@ class TriTree {
 		int Size();
 		~StringList();
 	};
-	void insert(Node*&, string, int);
+	
+	void insert(Node*&, string);
 	void suggestion(Node*&, string, StringList&, int length);
 	void findword(Node*&, string, StringList&);
 	void deletetree(Node*&);
+	void savetofile();
+	void readfromfile();
+	void insertfromfile(Node*&,char, bool);
 public:
 	TriTree();
 	void Display(Node*&);

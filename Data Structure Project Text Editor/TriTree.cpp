@@ -1,9 +1,9 @@
 #include"TriTree.h"
 
-TriTree::Node::Node()
+TriTree::Node::Node(char data = '-', bool colour = false)
 {
-	data = '-';
-	colour = false;
+	this->data = data;
+	this->colour = colour;
 }
 
 TriTree::StringList::Node::Node(string str)
@@ -66,28 +66,31 @@ TriTree::StringList::~StringList()
 	head = NULL;
 }
 
-void TriTree::insert(Node*& node, string str, int length = 0)
+void TriTree::insert(Node*& node, string str)
 {
-	if (length < str.length())
+	int length = 0;
+	int index = str[length] - 'a';
+	Node* current = node;
+	while (length < str.length())
 	{
-		for (int i = 0; i < 26; i++)
+		if (!current->childeren[index])
 		{
-			if (node->childeren[i])
+			current->childeren[index] = new Node(str[length]);
+		}
+		if (length == str.length() - 1)
+		{
+			current->childeren[index]->colour = true;
+		}
+		current = current->childeren[index];
+		length++;
+		index = str[length] - 'a';
+	}
+	/*for (int i = 0; i < 26; i++)
+	{
+		if (node->childeren[i])
+		{
+			if (node->childeren[i]->data == str[length])
 			{
-				if (node->childeren[i]->data == str[length])
-				{
-					if (length == str.length() - 1)
-					{
-						node->childeren[i]->colour = true;
-					}
-					insert(node->childeren[i], str, length + 1);
-					return;
-				}
-			}
-			else
-			{
-				node->childeren[i] = new Node;
-				node->childeren[i]->data = str[length];
 				if (length == str.length() - 1)
 				{
 					node->childeren[i]->colour = true;
@@ -96,29 +99,32 @@ void TriTree::insert(Node*& node, string str, int length = 0)
 				return;
 			}
 		}
-	}
+		else
+		{
+			node->childeren[i] = new Node;
+			node->childeren[i]->data = str[length];
+			if (length == str.length() - 1)
+			{
+				node->childeren[i]->colour = true;
+			}
+			insert(node->childeren[i], str, length + 1);
+			return;
+		}
+	}*/
+
 }
 
 void TriTree::suggestion(Node*& node, string str, StringList& wordlist, int length = 0)
 {
-	for (int i = 0; i < 26; i++)
+	int index = int(str[length] - 'a');
+	if (node->childeren[index])
 	{
-		if (node->childeren[i])
+		if (length == str.length() - 1)
 		{
-			if (node->childeren[i]->data == str[length])
-			{
-				if (length == str.length() - 1)
-				{
-					findword(node->childeren[i], str, wordlist);
-					return;
-				}
-				suggestion(node->childeren[i], str, wordlist, length + 1);
-			}
-		}
-		else
-		{
+			findword(node->childeren[index], str, wordlist);
 			return;
 		}
+		suggestion(node->childeren[index], str, wordlist, length + 1);
 	}
 }
 
@@ -128,27 +134,18 @@ void TriTree::findword(Node*& node, string str, StringList& wordlist)
 	{
 		if (node->childeren[i])
 		{
-			string word = "";
-			word += str;
+			string word = str;
 			if (node->childeren[i]->colour)
 			{
 				word += node->childeren[i]->data;
 				findword(node->childeren[i], word, wordlist);
 				wordlist.Insert(word);
-				if (!node->childeren[i]->childeren[0])
-				{
-					return;
-				}
 			}
 			else
 			{
 				word += node->childeren[i]->data;
 				findword(node->childeren[i], word, wordlist);
 			}
-		}
-		else
-		{
-			return;
 		}
 	}
 }
@@ -166,12 +163,67 @@ void TriTree::deletetree(Node*& node)
 	node = NULL;
 }
 
+void TriTree::savetofile()
+{
+	Node* nullnode = new Node;
+	string line;
+	write.open("tritree.txt");
+	queue<Node*> nodequeue;
+	nodequeue.push(root);
+	while (!nodequeue.empty())
+	{
+		for (int i = 0; i < 26; i++)
+		{
+			if (nodequeue.front()->childeren[i])
+			{
+				nodequeue.push(nullnode);
+			}
+			else
+			{
+				nodequeue.push(nodequeue.front()->childeren[i]);
+			}
+		}
+		write << nodequeue.front()->data << nodequeue.front()->colour << endl;
+	}
+	write.close();
+}
+
+void TriTree::readfromfile()
+{
+	string line = "";
+	read.open("tritree.txt");
+	getline(read, line);
+	Node* current = root = new Node(line[0], int(line[1] - '0'));
+	while (read.eof())
+	{
+
+		for (int i = 0; i < 26; i++)
+		{
+			current->childeren[i]->data = line[0];
+			current->childeren[i]->colour = int(line[1]-'0');
+		}
+	}
+	read.close();
+}
+
+void TriTree::insertfromfile(Node*& node, char data, bool colour)
+{
+	if (data != '-')
+	{
+		int index = data - 'a';
+		if (node->childeren[index])
+		{
+
+		}
+	}
+}
+
 //Public:
 TriTree::TriTree()
 {
 	root = new Node;
 	string line;
-	read.open("Dictionary.txt");
+	read.open("dictionary.txt");
 	while (getline(read, line)) {
 		insert(root, line);
 	}
