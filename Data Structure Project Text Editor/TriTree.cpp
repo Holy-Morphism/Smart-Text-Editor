@@ -68,60 +68,47 @@ TriTree::StringList::~StringList()
 
 void TriTree::insert(Node*& node, string str)
 {
+	/*
+	* Every character has a designated index
+	* If a character of the inserted word is not there , a new node is created
+	* otherwise we move on to the next character of the word 
+	* to move on every character of the word length is incremented 
+	*/
 	int length = 0;
-	int index = str[length] - 'a';
+	int index = str[length] - 'a';//Gives the designated index
 	Node* current = node;
-	while (length < str.length())
+	while (length < str.length())//until the whole word is inserted
 	{
-		if (!current->childeren[index])
+		if (!current->childeren[index])//if the designated node of the character does not exist the character is inserted
 		{
 			current->childeren[index] = new Node(str[length]);
 		}
 		if (length == str.length() - 1)
 		{
+			/*
+			* At the last character the colour assigned true
+			* so to know where the word ends
+			*/
 			current->childeren[index]->colour = true;
 		}
-		current = current->childeren[index];
+		current = current->childeren[index];//moves on the next node of the designatd index
 		length++;
 		index = str[length] - 'a';
 	}
-	/*for (int i = 0; i < 26; i++)
-	{
-		if (node->childeren[i])
-		{
-			if (node->childeren[i]->data == str[length])
-			{
-				if (length == str.length() - 1)
-				{
-					node->childeren[i]->colour = true;
-				}
-				insert(node->childeren[i], str, length + 1);
-				return;
-			}
-		}
-		else
-		{
-			node->childeren[i] = new Node;
-			node->childeren[i]->data = str[length];
-			if (length == str.length() - 1)
-			{
-				node->childeren[i]->colour = true;
-			}
-			insert(node->childeren[i], str, length + 1);
-			return;
-		}
-	}*/
-
 }
 
 void TriTree::suggestion(Node*& node, string str, StringList& wordlist, int length = 0)
 {
-	int index = int(str[length] - 'a');
+	/*
+	* searches till the branches of the inserted word
+	* the calls the findword function
+	*/
+	int index = int(str[length] - 'a');//Gives the designated index
 	if (node->childeren[index])
 	{
-		if (length == str.length() - 1)
+		if (length == str.length() - 1)//when the last character is reached, the continuing characters are now searched
 		{
-			findword(node->childeren[index], str, wordlist);
+			findword(node->childeren[index], str, wordlist);//for searching continuing characters
 			return;
 		}
 		suggestion(node->childeren[index], str, wordlist, length + 1);
@@ -130,20 +117,20 @@ void TriTree::suggestion(Node*& node, string str, StringList& wordlist, int leng
 
 void TriTree::findword(Node*& node, string str, StringList& wordlist)
 {
-	for (int i = 0; i < 26; i++)
+	for (int i = 0; i < 26; i++)//Looks at every index for every continuing word
 	{
-		if (node->childeren[i])
+		if (node->childeren[i])//checks if node exists
 		{
-			string word = str;
+			string word = str;//the current string we want to continue
 			if (node->childeren[i]->colour)
 			{
-				word += node->childeren[i]->data;
-				findword(node->childeren[i], word, wordlist);
-				wordlist.Insert(word);
+				word += node->childeren[i]->data;//adds any found chaacter
+				findword(node->childeren[i], word, wordlist);//checks recursively
+				wordlist.Insert(word);//Inserts word into linked list
 			}
 			else
 			{
-				word += node->childeren[i]->data;
+				word += node->childeren[i]->data; // adds any found chaacter
 				findword(node->childeren[i], word, wordlist);
 			}
 		}
