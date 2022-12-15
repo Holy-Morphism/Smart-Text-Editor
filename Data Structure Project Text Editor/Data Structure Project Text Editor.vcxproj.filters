@@ -26,5 +26,8 @@
     <ClInclude Include="TriTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Huffman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

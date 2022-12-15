@@ -150,7 +150,7 @@ void TriTree::deletetree(Node*& node)
 	node = NULL;
 }
 
-void TriTree::savetofile()
+void TriTree::savetofile()//attempt at saving the tree 
 {
 	Node* nullnode = new Node;
 	string line;
