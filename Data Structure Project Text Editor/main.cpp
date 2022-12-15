@@ -1,9 +1,6 @@
-#include<iostream>
-#include<fstream>
-#include<string>
 #include<Windows.h>
 #include<conio.h>
-#include "TriTree.h"
+#include"TriTree.h"
 #include"Huffman.h"
 using namespace std;
 int main()
