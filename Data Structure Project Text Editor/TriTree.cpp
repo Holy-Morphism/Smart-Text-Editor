@@ -122,16 +122,11 @@ void TriTree::findword(Node*& node, string str, StringList& wordlist)
 		if (node->childeren[i])//checks if node exists
 		{
 			string word = str;//the current string we want to continue
+			word += node->childeren[i]->data;//adds any found chaacter
+			findword(node->childeren[i], word, wordlist);//checks recursively
 			if (node->childeren[i]->colour)
 			{
-				word += node->childeren[i]->data;//adds any found chaacter
-				findword(node->childeren[i], word, wordlist);//checks recursively
 				wordlist.Insert(word);//Inserts word into linked list
-			}
-			else
-			{
-				word += node->childeren[i]->data; // adds any found chaacter
-				findword(node->childeren[i], word, wordlist);
 			}
 		}
 	}
@@ -175,7 +170,7 @@ void TriTree::savetofile()//attempt at saving the tree
 	write.close();
 }
 
-void TriTree::readfromfile()
+void TriTree::readfromfile()//redundant code
 {
 	string line = "";
 	read.open("tritree.txt");
@@ -193,7 +188,7 @@ void TriTree::readfromfile()
 	read.close();
 }
 
-void TriTree::insertfromfile(Node*& node, char data, bool colour)
+void TriTree::insertfromfile(Node*& node, char data, bool colour)//redundant code 
 {
 	if (data != '-')
 	{
@@ -243,7 +238,7 @@ int TriTree::Suggestion(string str, string*& str_arr)
 	* assignes suggested words
 	* returns the size of string array
 	*/
-	StringList wordlist;
+	StringList wordlist;//linked list of string
 	suggestion(root, str, wordlist);
 	str_arr = wordlist.StringArray();
 	return wordlist.Size();
